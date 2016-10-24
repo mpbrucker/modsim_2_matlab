@@ -18,7 +18,7 @@ function [t,U] = run_model(time)
     emis = .93; % Unitless
     heat_in_coeff = 5; % W/(m^2 K)
     heat_out_coeff = 20; % W/(m^2 K)
-    T_out = 0; % C
+    T_out = 273; % K
     c_air = .005; % Specific heat of inside air; J/(kg K)
 
     % Derived values
@@ -41,7 +41,7 @@ function [t,U] = run_model(time)
     T_wall = U(:,1);
     T_air = U(:,2);
     display (T_wall(1));
-    plot(t,T_wall);
+    plot(t,T_air-273);
     hold on
    % plot(t,U_air);
     

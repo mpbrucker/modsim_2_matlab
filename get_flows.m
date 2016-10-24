@@ -12,8 +12,8 @@ function flows = get_flows(~, U, heat_in_coeff, heat_cap_air, heat_cap_wall, ...
     
     % Compute flows
     dWalldt = (R_in*(T_air-T_wall))-(R_out*(T_wall-T_out));
-    dAirdt = (emis*insol*win_area) - (R_in*(T_air-T_wall));
-    
+    %dAirdt = (emis*insol*win_area) - (R_in*(T_air-T_wall));
+    dAirdt = (R_in*(T_wall-T_air));
     flows = [dAirdt;dWalldt];
 
 end
