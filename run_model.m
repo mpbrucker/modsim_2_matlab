@@ -1,5 +1,5 @@
-%function [t,U] = run_model(time)
-time = 60*60*24; %1 day in seconds
+function [t,U] = run_model(input_time)
+    time = input_time*60*60*24; %1 day in seconds
 
     clf;
     % Parameters
@@ -22,7 +22,7 @@ time = 60*60*24; %1 day in seconds
     heat_out_coeff = 20; % W/(m^2 K)
 
     T_out = 273; % K
-    c_air = 5; % Specific heat of inside air; J/(kg K)
+    c_air = 1005; % Specific heat of inside air; J/(kg K)
                     %0.005
                     
     % Derived values
@@ -33,20 +33,23 @@ time = 60*60*24; %1 day in seconds
     heat_cap_wall = m_wall*c_wall; % J/K
     
     T_air_init = 295;
+    %display(T_air_init);
     T_wall_init = 295;
-    U_air_init = T_air_init / heat_cap_air;
-    U_wall_init = T_wall_init / heat_cap_wall;
-    display(U_wall_init);
+    U_air_init = T_air_init * heat_cap_air;
+    display(U_air_init);
+    U_wall_init = T_wall_init * heat_cap_wall;
+   % display(U_wall_init);
 
     flows_func = @(Ti,Ui) get_flows(Ti,Ui, heat_in_coeff, heat_cap_air, heat_cap_wall, ...
-        heat_out_coeff, A_out, A_in, therm_cond, T_out, emis, insol, win_area);
+        heat_out_coeff, A_out, A_in, therm_cond, T_out, wall_thick, emis, insol, win_area);
 
-    [t,U] = ode23s(flows_func,[0 time],[U_air_init;U_wall_init]);
-    T_wall = U(:,1);
-    T_air = U(:,2)./heat_cap_air;
+    [t,U] = ode45(flows_func,[0 time],[U_air_init U_wall_init]);
+    T_wall = U(:,2) ./ heat_cap_wall;
+    T_air = U(:,1) ./ heat_cap_air;
+    %display(T_air(1));
     %display (T_wall(1));
-    plot(t,T_air-273);
+    plot(t ./ (60*60*24),T_air-273);
     hold on
    % plot(t,U_air);
     
-%end
+end
