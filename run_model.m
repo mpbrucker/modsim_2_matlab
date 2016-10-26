@@ -48,7 +48,9 @@ function [t,U] = run_model(input_time)
     T_air = U(:,1) ./ heat_cap_air;
     %display(T_air(1));
     %display (T_wall(1));
-    plot(t ./ (60*60*24),T_air-273);
+    plot(t ./ (60*60),T_air-273);
+    soi = compute_soi(T_air,0,10);
+    display(soi);
     hold on
    % plot(t,U_air);
     
