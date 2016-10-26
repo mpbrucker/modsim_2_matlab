@@ -1,5 +1,6 @@
 function flows = get_flows(t, U, heat_in_coeff, heat_cap_air, heat_cap_wall, heat_cap_glass, ...
-    heat_out_coeff, A_out, A_in, therm_cond, T_out, wall_thick, emis, insol, win_area)
+    heat_out_coeff, A_out, A_in, therm_cond, wall_thick, emis, insol, win_area, ...
+    T_out_avg, T_var)
     theta = get_sun_angle(t,33.43,112); % Angle of the sun
     % Get energy and temperature of inside air and wall
     U_air = U(1);
@@ -8,7 +9,7 @@ function flows = get_flows(t, U, heat_in_coeff, heat_cap_air, heat_cap_wall, hea
     T_air = energyToTemperature(U_air,heat_cap_air);
     T_wall = energyToTemperature(U_wall,heat_cap_wall);
     T_win = energyToTemperature(U_win,heat_cap_glass);
-    
+    T_out = get_out_temp(t,T_out_avg,T_var);
     % Equivalent thermal resistances
     R_in = 1/(1/(heat_in_coeff*A_in)+ (wall_thick/(therm_cond*A_in)));
     R_out = 1/(1/(heat_out_coeff*A_out)+ (wall_thick/(therm_cond*A_out)));

@@ -23,7 +23,8 @@ function [t,U] = run_model(input_time)
     heat_in_coeff = 5; % W/(m^2 K)
     heat_out_coeff = 20; % W/(m^2 K)
 
-    T_out = 293; % K
+    T_out_avg = 293; % K
+    T_var = 10; % K
     c_air = 1005; % Specific heat of inside air; J/(kg K)
                     %0.005
     c_glass = 670; % Specific heat of glass; J/(kg K)
@@ -44,7 +45,8 @@ function [t,U] = run_model(input_time)
     U_win_init = T_win_init * heat_cap_glass;
     
     flows_func = @(Ti,Ui) get_flows(Ti,Ui, heat_in_coeff, heat_cap_air, heat_cap_wall, heat_cap_glass, ...
-        heat_out_coeff, A_out, A_in, therm_cond, T_out, wall_thick, emis, insol, win_area);
+        heat_out_coeff, A_out, A_in, therm_cond, wall_thick, emis, insol, win_area, ...
+        T_out_avg, T_var);
 
     [t,U] = ode45(flows_func,[0 time],[U_air_init U_wall_init U_win_init]);
     T_wall = U(:,2) ./ heat_cap_wall;
