@@ -4,14 +4,14 @@ function [t,U,variance] = run_model(tm_amount, input_time)
     clf;
     % Parameters
     win_area = 30; % m^2
-    in_H = 3; % m
-    in_L = 10; % m
-    in_W = 3; % m
-    wall_thick = .25; % m
-    wall_density = 2400; % kg/m^3
+    in_H = 4.572; % m
+    in_L = 19.812; % m
+    in_W = 12.192; % m
+    wall_thick = .15; % m
+    wall_density = 600; % kg/m^3
     air_density = 1.225; % kg/m^3
-    therm_cond = .55; % Thermal conductivity of walls; W/(m K)
-    c_wall = 960; % Specific heat of walls; J/(kg K)
+    therm_cond = .1; % Thermal conductivity of walls; W/(m K)
+    c_wall = 1200; % Specific heat of walls; J/(kg K)
                     %0.23
     c_tm = 960; % J/(kg K)
     tm = tm_amount; % kg

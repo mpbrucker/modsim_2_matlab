@@ -1,5 +1,6 @@
 function vars = sweep(min_tm, max_tm, input_time)
-    n = 500;
+    clf;
+    n = 50;
     tm_amounts = linspace(min_tm, max_tm, n);
     vars = zeros(1, n);
     
