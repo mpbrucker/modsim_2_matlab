@@ -1,6 +1,6 @@
 function flows = get_flows(t, U, heat_in_coeff, heat_cap_air, heat_cap_wall, heat_cap_glass, heat_cap_tm, ...
     heat_out_coeff, A_out, A_in, therm_cond, wall_thick, emis, insol, win_area, T_out_avg, T_var)
-    theta = get_sun_angle(t,33.43,112); % Angle of the sun
+    theta = get_sun_angle(t,42.2809,71.2378); % Angle of the sun for Needham, MA
     % Get energy and temperature of inside air and wall
     U_air = U(1);
     U_wall = U(2);
