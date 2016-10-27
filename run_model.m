@@ -53,13 +53,13 @@ function [t,U,variance] = run_model(tm_amount, input_time)
         T_out_avg, T_var);
 
     [t,U] = ode23s(flows_func,[0 time],[U_air_init U_wall_init U_win_init U_tm_init]);
-    %T_wall = U(:,2) ./ heat_cap_wall;
+
     T_air = U(:,1) ./ heat_cap_air;
     variance = compute_soi(T_air, 291.483, 297.039);
-    %display(variance)
-    %display(T_air(1));
-    %display (T_wall(1));
-    plot(t ./ (60*60*24),T_air-273);
-   % plot(t,U_air);
+
+    plot(t ./ (60*60*24),T_air*(9/5)-459.67);
+    xlabel('Time (days)')
+    ylabel('Temperature (°F)')
+    title('Inside Temperature over Time')
     
 end
