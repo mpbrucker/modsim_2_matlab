@@ -1,4 +1,4 @@
-function [t,U] = run_model(input_time)
+function [t,U,variance] = run_model(tm_amount, input_time)
     time = input_time*60*60*24; %1 day in seconds
 
     clf;
@@ -13,7 +13,8 @@ function [t,U] = run_model(input_time)
     therm_cond = .55; % Thermal conductivity of walls; W/(m K)
     c_wall = 960; % Specific heat of walls; J/(kg K)
                     %0.23
-    
+    c_tm = 960; % J/(kg K)
+    tm = tm_amount; % kg
 
     % Prescribed values
     win_thick = .0032; % Window thickness (m)
@@ -23,7 +24,7 @@ function [t,U] = run_model(input_time)
     heat_in_coeff = 5; % W/(m^2 K)
     heat_out_coeff = 20; % W/(m^2 K)
 
-    T_out_avg = 293; % K
+    T_out_avg = 273; % K
     T_var = 10; % K
     c_air = 1005; % Specific heat of inside air; J/(kg K)
                     %0.005
@@ -36,27 +37,29 @@ function [t,U] = run_model(input_time)
     heat_cap_air = m_air*c_air; % J/K
     heat_cap_wall = m_wall*c_wall; % J/K
     heat_cap_glass = m_glass*c_glass;
+    heat_cap_tm = tm*c_tm;
     
     T_air_init = 273; % K
     T_wall_init = 273; % K
     T_win_init = 273; % K
+    T_tm_init = 273;
     U_air_init = T_air_init * heat_cap_air;
     U_wall_init = T_wall_init * heat_cap_wall;
     U_win_init = T_win_init * heat_cap_glass;
+    U_tm_init = T_tm_init * heat_cap_tm;
     
-    flows_func = @(Ti,Ui) get_flows(Ti,Ui, heat_in_coeff, heat_cap_air, heat_cap_wall, heat_cap_glass, ...
+    flows_func = @(Ti,Ui) get_flows(Ti,Ui, heat_in_coeff, heat_cap_air, heat_cap_wall, heat_cap_glass, heat_cap_tm, ...
         heat_out_coeff, A_out, A_in, therm_cond, wall_thick, emis, insol, win_area, ...
         T_out_avg, T_var);
 
-    [t,U] = ode45(flows_func,[0 time],[U_air_init U_wall_init U_win_init]);
-    T_wall = U(:,2) ./ heat_cap_wall;
+    [t,U] = ode23s(flows_func,[0 time],[U_air_init U_wall_init U_win_init U_tm_init]);
+    %T_wall = U(:,2) ./ heat_cap_wall;
     T_air = U(:,1) ./ heat_cap_air;
+    variance = compute_soi(T_air, 291.483, 297.039);
+    %display(variance)
     %display(T_air(1));
     %display (T_wall(1));
     plot(t ./ (60*60*24),T_air-273);
-    soi = compute_soi(T_air,0,10);
-    display(soi);
-    hold on
    % plot(t,U_air);
     
 end
