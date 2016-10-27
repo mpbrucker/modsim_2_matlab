@@ -24,8 +24,8 @@ function [t,U,variance] = run_model(tm_amount, input_time)
     heat_in_coeff = 5; % W/(m^2 K)
     heat_out_coeff = 20; % W/(m^2 K)
 
-    T_out_avg = 273; % K
-    T_var = 10; % K
+    T_out_avg = 282.039; % K
+    T_var = 15; % K
     c_air = 1005; % Specific heat of inside air; J/(kg K)
                     %0.005
     c_glass = 670; % Specific heat of glass; J/(kg K)
@@ -39,10 +39,10 @@ function [t,U,variance] = run_model(tm_amount, input_time)
     heat_cap_glass = m_glass*c_glass;
     heat_cap_tm = tm*c_tm;
     
-    T_air_init = 273; % K
-    T_wall_init = 273; % K
-    T_win_init = 273; % K
-    T_tm_init = 273;
+    T_air_init = 271.5; % K
+    T_wall_init = 271.5; % K
+    T_win_init = 271.5; % K
+    T_tm_init = 271.5;
     U_air_init = T_air_init * heat_cap_air;
     U_wall_init = T_wall_init * heat_cap_wall;
     U_win_init = T_win_init * heat_cap_glass;
@@ -59,7 +59,11 @@ function [t,U,variance] = run_model(tm_amount, input_time)
 
     plot(t ./ (60*60*24),T_air*(9/5)-459.67);
     xlabel('Time (days)')
+    xlim([0 365])
     ylabel('Temperature (°F)')
     title('Inside Temperature over Time')
     
+    hold on
+    %line([0 365], [65 65], 'Color', 'r')
+    %line([0 365], [75 75], 'Color', 'r')
 end
