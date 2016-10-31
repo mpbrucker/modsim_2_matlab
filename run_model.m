@@ -1,6 +1,5 @@
 function [t,U,variance] = run_model(tm_amount, input_time)
     time = input_time*60*60*24; %1 day in seconds
-
     clf;
     % Parameters
     win_area = 30; % m^2
@@ -52,18 +51,18 @@ function [t,U,variance] = run_model(tm_amount, input_time)
         heat_out_coeff, A_out, A_in, therm_cond, wall_thick, emis, insol, win_area, ...
         T_out_avg, T_var);
 
+    hold on;
     [t,U] = ode23s(flows_func,[0 time],[U_air_init U_wall_init U_win_init U_tm_init]);
 
     T_air = U(:,1) ./ heat_cap_air;
-    variance = compute_soi(T_air, 291.483, 297.039);
+    %T_air = T_air(2825:2995);
+    %t = t(2825:2995);
+    %variance = compute_soi(T_air, 291.483, 297.039);
 
     plot(t ./ (60*60*24),T_air*(9/5)-459.67);
-    xlabel('Time (days)')
-    xlim([0 365])
-    ylabel('Temperature (°F)')
-    title('Inside Temperature over Time')
+    %xlabel('Time (days)')
+    %xlim([0 365])
+    %ylabel('Temperature (°F)')
+    %title('Inside Temperature over Time')
     
-    hold on
-    %line([0 365], [65 65], 'Color', 'r')
-    %line([0 365], [75 75], 'Color', 'r')
 end
